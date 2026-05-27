@@ -1,46 +1,55 @@
 package devbank
 
+import grails.converters.JSON
+
 class ContaCorrenteController {
 
-    static respondeFormats = ['json']
+    static responseFormats = ['json']
+
     def index() { 
-        respond ContaCorrente.list
+        render ContaCorrente.list() as JSON
     }
     
     def show(Long id){
-        def contaMostrarUma = ContaCorrente.get(id)
-        if(!contaMostrarUma){
-            responde contaMostrarUma status: 404, text: "Conta não encontrada"
+        def contaEncontrar = ContaCorrente.get(id)
+        
+        if(!contaEncontrar){
+            render status: 404, text: "Conta não encontrada"
             return
         }
-        respond conta
+        render contaEncontrar as JSON
     }
 
     def save(){
         def newConta = new ContaCorrente(request.JSON)
+
         if(!newConta.save(flush:true)){
             respond newConta.errors, status: 422 // Entidade não foi entendida ou processada
             return
         }
-        render newConta as json
+        render newConta as JSON
     }
     
     def update(Long id){
-        def newConta = ContaCorrente.get(id)
-        if(!newConta){render status: 404; return}
+        def contaExistente = ContaCorrente.get(id)
 
-        newConta.properties = request.JSON
-        if(!conta.save(flush:true)){
+        if(!contaExistente){render status: 404; return}
+
+        contaExistente.properties = request.JSON
+
+        if(!contaExistente.save(flush:true)){
+            responde contaExistente.errors, status: 422
             return
         }
-        render newConta as JSON
+        render contaExistente as JSON
     }
 
     def delete(Long id){
-        def newConta = ContaCorrente.get(id)
-        if(!newConta){render status: 404; return}
+        def contaParaDeletar = ContaCorrente.get(id)
 
-        conta.delete(flush:true)
+        if(!ContaParaDeletar){render status: 404; return}
+
+        contaParaDeletar.delete(flush:true)
         render status:204 // vázio
     }
 }
