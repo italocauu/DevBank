@@ -6,8 +6,28 @@ class ContaCorrenteController {
 
     static responseFormats = ['json']
 
+    private String formatoCpf(String cpf){
+        if(!cpf) return null
+
+        String limpoCpf = cpf.replaceAll(/\D/, "")
+
+        if(limpoCpf.length() == 11){
+            return limpoCpf.replaceFirst(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
+        }
+        return cpf
+    }
+
     def index() { 
-        render ContaCorrente.list() as JSON
+        def listarContas = ContaCorrente.list().collect{ conta ->
+            return[
+            id: conta.id,
+            titular: conta.titular,
+            cpf: formatoCpf(conta.cpf),
+            chavePix: conta.chavePix,
+            saldo: conta.saldo
+            ]
+        }
+        render listarContas as JSON
     }
     
     def show(Long id){
@@ -17,7 +37,15 @@ class ContaCorrenteController {
             render status: 404, text: "Conta não encontrada"
             return
         }
-        render contaEncontrar as JSON
+        
+        def contaFormatada = [
+            id: contaEncontrar.id,
+            titular: contaEncontrar.titular,
+            cpf: formatoCpf(contaEncontrar.cpf),
+            chavePix: contaEncontrar.chavePix,
+            saldo: contaEncontrar.saldo
+        ]
+        render contaFormatada as JSON
     }
 
     def save(){
