@@ -17,16 +17,18 @@ class ContaCorrenteController {
         return cpf
     }
 
-    def index() { 
-        def listarContas = ContaCorrente.list().collect{ conta ->
-            return[
+    private Map formatarContas(ContaCorrente conta){
+        return[
             id: conta.id,
             titular: conta.titular,
             cpf: formatoCpf(conta.cpf),
             chavePix: conta.chavePix,
             saldo: conta.saldo
-            ]
-        }
+        ]
+    }
+
+    def index() { 
+        def listarContas = ContaCorrente.list().collect{formatarContas(it)}
         render listarContas as JSON
     }
     
