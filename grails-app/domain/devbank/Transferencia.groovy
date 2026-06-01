@@ -9,4 +9,8 @@ class Transferencia {
 	
     static constraints = {
     }
+
+	static mapping = {
+		id generator: 'identity'
+	}
 }

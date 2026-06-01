@@ -1,12 +1,12 @@
-package DevBank
+package devbank
 
 import grails.converters.JSON
 
 class TransferenciaController {
 
-    static responseFormats = ['JSON']
+    static responseFormats = ['json']
 
-    TransferenciaService TransferenciaService
+    def TransferenciaService
     
     def index() {
         render Transferencia.list() as JSON
@@ -32,9 +32,8 @@ class TransferenciaController {
 
     def save(){
         try{
-            def novaTransferencia = transferenciaService.actionTransfer(request.JSON)
-
-            respond novaTransferencia, status:201
+            def novaTransferencia = transferenciaService.realizarTransferencia(request.JSON)
+            render novaTransferencia as JSON
         } catch (Exception e){
             render status: 422, text: e.getMessage()
         }
@@ -49,8 +48,7 @@ class TransferenciaController {
 
         conta.properties = request.JSON
         if(!newTransferencia.save(flush: true)){
-            respond Transferencia.erros, status: 422
-            return
+            respond newTransferencia.erros, status: 422
         }
         render newTransferencia as JSON
     }

@@ -1,4 +1,4 @@
-package DevBank
+package devbank
 
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification

@@ -1,4 +1,4 @@
-package DevBank
+package devbank
 
 import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification

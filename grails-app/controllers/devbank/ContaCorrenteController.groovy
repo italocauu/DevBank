@@ -38,7 +38,7 @@ class ContaCorrenteController {
         contaExistente.properties = request.JSON
 
         if(!contaExistente.save(flush:true)){
-            responde contaExistente.errors, status: 422
+            respond contaExistente.errors, status: 422
             return
         }
         render contaExistente as JSON
@@ -47,7 +47,7 @@ class ContaCorrenteController {
     def delete(Long id){
         def contaParaDeletar = ContaCorrente.get(id)
 
-        if(!ContaParaDeletar){render status: 404; return}
+        if(!contaParaDeletar){render status: 404; return}
 
         contaParaDeletar.delete(flush:true)
         render status:204 // vázio

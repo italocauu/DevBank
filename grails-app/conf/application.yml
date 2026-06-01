@@ -15,9 +15,9 @@ grails:
             events: false
 info:
     app:
-        name: '@info.app.name@'
-        version: '@info.app.version@'
-        grailsVersion: '@info.app.grailsVersion@'
+        name: "@info.app.name@"
+        version: "@info.app.version@"
+        grailsVersion: "@info.app.grailsVersion@"
 spring:
     main:
         banner-mode: "off"
@@ -43,28 +43,28 @@ grails:
                         - Presto
                         - Trident
         types:
-            all: '*/*'
+            all: "*/*"
             atom: application/atom+xml
             css: text/css
             csv: text/csv
             form: application/x-www-form-urlencoded
             html:
-              - text/html
-              - application/xhtml+xml
+                - text/html
+                - application/xhtml+xml
             js: text/javascript
             json:
-              - application/json
-              - text/json
+                - application/json
+                - text/json
             multipartForm: multipart/form-data
             pdf: application/pdf
             rss: application/rss+xml
             text: text/plain
             hal:
-              - application/hal+json
-              - application/hal+xml
+                - application/hal+json
+                - application/hal+xml
             xml:
-              - text/xml
-              - application/xml
+                - text/xml
+                - application/xml
     urlmapping:
         cache:
             maxsize: 1000
@@ -96,27 +96,27 @@ hibernate:
 dataSource:
     pooled: true
     jmxExport: true
-    driverClassName: org.h2.Driver
-    username: sa
-    password: ''
-
 environments:
     development:
         dataSource:
-            dbCreate: create-drop
-            url: jdbc:postgresql://localhost:5432/restaurante?currentSchema=public
+            dbCreate: update
+            url: jdbc:postgresql://localhost:5432/devbank?currentSchema=public
             driverClassName: org.postgresql.Driver
             dialect: org.hibernate.dialect.PostgreSQLDialect
-            username: Ailot
-            password: 'pokemon'
+            username: "Ailot"
+            password: "pokemon"
     test:
         dataSource:
             dbCreate: update
-            url: jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+            url: jdbc:postgresql://localhost:5432/devbank_test?currentSchema=public
+            username: "Ailot"
+            password: "pokemon"
     production:
         dataSource:
             dbCreate: none
-            url: jdbc:h2:./prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+            url: jdbc:postgresql://localhost:5432/devbank_prod?currentSchema=public
+            username: "Ailot"
+            password: "pokemon"
             properties:
                 jmxEnabled: true
                 initialSize: 5
