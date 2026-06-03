@@ -8,11 +8,11 @@ class TransferenciaService {
 @Transactional
 Transferencia realizarTransferencia(def dados){
 
-    ContaCorrente origem = ContaCorrente.get(dados.origemId as Long)
-    ContaCorrente destino = ContaCorrente.get(dados.destinoId as Long)
+    ContaCorrente origem = ContaCorrente.findByChavePix(dados.chavePixOrigem)
+    ContaCorrente destino = ContaCorrente.findByChavePix(dados.chavePixDestino)
 
-    if(!origem) throw new Exception("Conta de origem não encontrada")
-    if(!destino) throw new Exception("Conta de destino não encontrada")
+    if(!origem) throw new Exception("Chave PIX de origem inválida")
+    if(!destino) throw new Exception("Chave PIX de destino inválida")
 
     BigDecimal valor = dados.valor as BigDecimal
 
