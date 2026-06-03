@@ -8,10 +8,11 @@ class ContaCorrente {
 	String cpf
 	String chavePix
 	BigDecimal saldo = 0.0
+	String celular
 
 	static constraints = {
 		// Pensar em como tratar pessoas com o mesmo nome.
-		titular nullabe: false, blank: false
+		titular nullable: false, blank: false
 
 		cpf nullable: false, blank: false, unique: true, validator:{ val ->
 			
@@ -24,6 +25,10 @@ class ContaCorrente {
 		}
 
 		saldo min: 0.0
+
+		celular nullable: false, blank: false, unique: true{val ->
+			if(!CelularValidator.isValido(val)) return 'contaCorrente.celular.validator.invalid'
+		}
 	}
 
 		static mapping = {
