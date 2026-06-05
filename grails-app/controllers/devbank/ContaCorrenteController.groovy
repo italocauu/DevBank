@@ -6,16 +6,7 @@ class ContaCorrenteController {
 
     static responseFormats = ['json']
 
-    private String formatoCpf(String cpf){
-        if(!cpf) return null
-
-        String limpoCpf = cpf.replaceAll(/\D/, "")
-
-        if(limpoCpf.length() == 11){
-            return limpoCpf.replaceFirst(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
-        }
-        return cpf
-    }
+    ContaCorrenteService ContaCorrenteService
 
     private Map formatarContas(ContaCorrente conta){
         return[
@@ -28,6 +19,13 @@ class ContaCorrenteController {
         ]
     }
 
+    private String formatoCpf(String cpf) {
+        if (cpf != null && cpf.length() == 11) {
+            return cpf.replaceAll(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
+        }
+        return cpf 
+    }
+
     def index() { 
         def listarContas = ContaCorrente.list().collect{formatarContas(it)}
         render listarContas as JSON
@@ -36,29 +34,38 @@ class ContaCorrenteController {
     def show(Long id){
         def contaEncontrar = ContaCorrente.get(id)
         
-        if(!contaEncontrar){
+        if(!ContaCorrente.get(id)){
             render status: 404, text: "Conta não encontrada"
             return
         }
-        
-        def contaFormatada = [
-            id: contaEncontrar.id,
-            titular: contaEncontrar.titular,
-            cpf: formatoCpf(contaEncontrar.cpf),
-            chavePix: contaEncontrar.chavePix,
-            saldo: contaEncontrar.saldo
-        ]
+
+        def contaFormatada = formatarContas(ContaCorrente.get(id))
+
         render contaFormatada as JSON
     }
 
     def save(){
-        def newConta = new ContaCorrente(request.JSON)
+        try{
+            String titular = request.JSON.titular
+            String cpf = request.JSON.cpf
+            String chavePix = request.JSON.chavePix
+            String celular = request.JSON.celular
+            String email = request.JSON.email
 
-        if(!newConta.save(flush:true)){
-            respond newConta.errors, status: 422 // Entidade não foi entendida ou processada
-            return
+            def resultTemp = contaCorrenteService.abrirNovaConta(titular, cpf, chavePix, celular, email)
+
+            if(resultTemp.sucesso){
+                response.status = 201 // Criação bem sucedida
+            } else{
+                response.status = 400 // Criação inválida
+            }
+
+            render resultTemp as JSON
+
+        } catch (Exception e){
+            response.status = 500
+            render([sucesso: false, messagem: "Erro interno no servidor: ${e.message}"] as JSON)
         }
-        render newConta as JSON
     }
     
     def update(Long id){

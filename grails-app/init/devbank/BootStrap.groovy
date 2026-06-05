@@ -1,9 +1,9 @@
-package devbank
+import devbank
 
 class BootStrap {
 
-    def init = { servletContext ->
+    def init = {
     }
-    def destroy = {
-    }
+
+    def destroy = {}
 }
