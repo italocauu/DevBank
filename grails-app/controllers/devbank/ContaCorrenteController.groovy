@@ -23,7 +23,7 @@ class ContaCorrenteController {
             titular: conta.titular,
             cpf: formatoCpf(conta.cpf),
             chavePix: conta.chavePix,
-            saldo: conta.saldo
+            saldo: conta.saldo,
             celular: conta.celular
         ]
     }
