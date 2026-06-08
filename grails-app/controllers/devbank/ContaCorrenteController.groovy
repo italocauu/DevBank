@@ -1,29 +1,49 @@
 package devbank
 
 import grails.converters.JSON
+import devbank.dto.ContaCorrenteDTO
 
 class ContaCorrenteController {
 
     static responseFormats = ['json']
 
-    ContaCorrenteService ContaCorrenteService
+    ContaCorrenteService contaCorrenteService
 
-    private Map formatarContas(ContaCorrente conta){
-        return[
-            id: conta.id,
-            titular: conta.titular,
-            cpf: formatoCpf(conta.cpf),
-            chavePix: conta.chavePix,
-            saldo: conta.saldo,
-            celular: conta.celular
-        ]
-    }
+    def save(){
+        try{
+            def json = request.JSON  // lê UMA vez e guarda
 
-    private String formatoCpf(String cpf) {
-        if (cpf != null && cpf.length() == 11) {
-            return cpf.replaceAll(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
+            def dadosFiltrados = [
+                titular: json.titular?.toString(),
+                cpf:     json.cpf?.toString(),
+                celular: json.celular?.toString(),
+                email:   json.email?.toString()
+            ]
+
+        println "JSON BRUTO: ${json}"
+        println "DADOS FILTRADOS: ${dadosFiltrados}"
+
+        def relato = contaCorrenteService.salvarDados(dadosFiltrados)
+
+            // Agora responsestatus, aqui é o relatorio escrito se deu certo ou não, apenas para visualizar
+            response.status = relato.statusHttp
+
+            // Aqui entregaremos ao cliente
+
+            if(relato.sucesso){
+                // Classe DTO assumindo a formatação
+                def dto = ContaCorrenteDTO.deContaCorrente(relato.dados)
+                render([mensagem: relato.mensagem, conta: dto.properties] as JSON)
+
+            } else{
+                render relato as JSON
+            }
+
+        } catch (Exception e){
+            response.status = 500
+            render([sucesso: false, mensagem: "Erro interno: ${e.message}"] as JSON)
+
         }
-        return cpf 
     }
 
     def index() { 
@@ -42,30 +62,6 @@ class ContaCorrenteController {
         def contaFormatada = formatarContas(ContaCorrente.get(id))
 
         render contaFormatada as JSON
-    }
-
-    def save(){
-        try{
-            String titular = request.JSON.titular
-            String cpf = request.JSON.cpf
-            String chavePix = request.JSON.chavePix
-            String celular = request.JSON.celular
-            String email = request.JSON.email
-
-            def resultTemp = contaCorrenteService.abrirNovaConta(titular, cpf, chavePix, celular, email)
-
-            if(resultTemp.sucesso){
-                response.status = 201 // Criação bem sucedida
-            } else{
-                response.status = 400 // Criação inválida
-            }
-
-            render resultTemp as JSON
-
-        } catch (Exception e){
-            response.status = 500
-            render([sucesso: false, messagem: "Erro interno no servidor: ${e.message}"] as JSON)
-        }
     }
     
     def update(Long id){
