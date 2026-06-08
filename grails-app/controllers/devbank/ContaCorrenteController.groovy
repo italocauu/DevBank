@@ -46,16 +46,22 @@ class ContaCorrenteController {
         }
     }
 
-    def index() { 
+    def index() {
+        try{
         def listarContas = ContaCorrente.list().collect{ conta ->
            ContaCorrenteDTO.deContaCorrente(conta).properties 
 
         }
         render listarContas as JSON
+        } catch (Exception e){
+            response.status = 500
+            render([sucesso: false, mensagem: "Erro interno: ${e.message}"] as JSON)
+    }
     }
 
     
     def show(Long id){
+        try{
         def contaEncontrar = ContaCorrente.get(id)
         
         if(!ContaCorrente.get(id)){
@@ -66,22 +72,34 @@ class ContaCorrenteController {
         def dto = ContaCorrenteDTO.deContaCorrente(contaEncontrar)
 
         render dto.properties as JSON
+        } catch (Exception e){
+            response.status = 500
+            render([sucesso: false, mensagem: "Erro interno: ${e.message}"] as JSON)
+    }
     }
     
 
 
     def update(Long id){
+        try{
         def json = request.JSON
         def relato = contaCorrenteService.atualizarDados(id, json)
         response.status = relato.statusHttp
         render relato as JSON
+        } catch (Exception e){
+            response.status = 500
+            render([sucesso: false, mensagem: "Erro interno: ${e.message}"] as JSON)
+    }
     }
 
-
-
     def delete(Long id){
+        try{
         def relato = contaCorrenteService.apagarDados(id)
         response.status = relato.statusHttp
         render relato as JSON
+    } catch (Exception e){
+            response.status = 500
+            render([sucesso: false, mensagem: "Erro interno: ${e.message}"] as JSON)
+}
     }
 }

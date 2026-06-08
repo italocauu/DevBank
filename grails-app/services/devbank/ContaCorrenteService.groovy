@@ -24,6 +24,16 @@ class ContaCorrenteService {
 
         // Regras de negócios
 
+        if(!CpfValidator.isValid(dadosDaContaCorrenteJSON.cpf)){
+            return [sucesso: false, mensagem: "CPF Inválido", statusHttp: 400]
+        }
+        if(!CelularValidator.isValid(dadosDaContaCorrenteJSON.celular)){
+            return [sucesso: false, mensagem: "Telefone inválido", statusHttp: 400]
+        }
+        if(!EmailValidator.isValid(dadosDaContaCorrenteJSON.email)){
+            return [sucesso: false, mensagem: "Email inválido", statusHttp: 400]
+        }
+
         // Hora de salvar!
         def novaConta = new ContaCorrente(
             titular: dadosDaContaCorrenteJSON.titular,
@@ -55,15 +65,14 @@ class ContaCorrenteService {
         }
 
         if(dadosJSON.titular) contaExistente.titular = dadosJSON.titular
-        if(dadosJSON.celular) contaExistente = dadosJSON.celular
-        if(dadosJSON.email)   contaExistente = dadosJSON.email
-        if(dadosJSON.chavePix) contaExistente = dadosJSON.chavePix
+        if(dadosJSON.celular) contaExistente.celular = dadosJSON.celular
+        if(dadosJSON.email)   contaExistente.email = dadosJSON.email
+        if(dadosJSON.chavePix) contaExistente.chavePix = dadosJSON.chavePix
 
 
     if(!contaExistente.save(flush:true)){
         return[sucesso: false, mensagem: "Erro ao atualizar", erros: contaExistente.errors.allErrors, statusHttp: 422]
     }
-''
     return [sucesso: true, mensagem: "Conta atualizada", dados: contaExistente, statusHttp: 200]
 
     }

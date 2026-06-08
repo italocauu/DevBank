@@ -1,7 +1,7 @@
 package devbank.utils;
 
 public class CelularValidator{
-    public static boolean isValido(String celular){
+    public static boolean isValid(String celular){
 
     if (celular == null || celular.trim().isEmpty()) return false;
 

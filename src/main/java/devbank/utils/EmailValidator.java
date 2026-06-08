@@ -2,7 +2,7 @@ package devbank.utils;
 
 public class EmailValidator{
 
-    public static boolean isValido(String email){
+    public static boolean isValid(String email){
 
         if(email == null || email.trim().isEmpty()) {
             return false;
