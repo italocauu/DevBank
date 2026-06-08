@@ -18,7 +18,6 @@ static constraints = {
 	titular nullable: false, blank: false
 
 	cpf nullable: false, blank: false, unique: true, validator:{ val ->
-		
 		if(!CpfValidator.isValid(val)) return 'contaCorrente.cpf.validator.invalid'
 	}
 
