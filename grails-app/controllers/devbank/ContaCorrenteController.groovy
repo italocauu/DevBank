@@ -20,15 +20,15 @@ class ContaCorrenteController {
                 email:   json.email?.toString()
             ]
 
-        println "JSON BRUTO: ${json}"
-        println "DADOS FILTRADOS: ${dadosFiltrados}"
+        // println "JSON BRUTO: ${json}"
+        // println "DADOS FILTRADOS: ${dadosFiltrados}"
 
         def relato = contaCorrenteService.salvarDados(dadosFiltrados)
 
             // Agora responsestatus, aqui é o relatorio escrito se deu certo ou não, apenas para visualizar
             response.status = relato.statusHttp
 
-            // Aqui entregaremos ao cliente
+            // Aqui entregaremos ao client
 
             if(relato.sucesso){
                 // Classe DTO assumindo a formatação
@@ -47,9 +47,13 @@ class ContaCorrenteController {
     }
 
     def index() { 
-        def listarContas = ContaCorrente.list().collect{formatarContas(it)}
+        def listarContas = ContaCorrente.list().collect{ conta ->
+           ContaCorrenteDTO.deContaCorrente(conta).properties 
+
+        }
         render listarContas as JSON
     }
+
     
     def show(Long id){
         def contaEncontrar = ContaCorrente.get(id)
@@ -59,31 +63,25 @@ class ContaCorrenteController {
             return
         }
 
-        def contaFormatada = formatarContas(ContaCorrente.get(id))
+        def dto = ContaCorrenteDTO.deContaCorrente(contaEncontrar)
 
-        render contaFormatada as JSON
+        render dto.properties as JSON
     }
     
+
+
     def update(Long id){
-        def contaExistente = ContaCorrente.get(id)
-
-        if(!contaExistente){render status: 404; return}
-
-        contaExistente.properties = request.JSON
-
-        if(!contaExistente.save(flush:true)){
-            respond contaExistente.errors, status: 422
-            return
-        }
-        render contaExistente as JSON
+        def json = request.JSON
+        def relato = contaCorrenteService.atualizarDados(id, json)
+        response.status = relato.statusHttp
+        render relato as JSON
     }
 
+
+
     def delete(Long id){
-        def contaParaDeletar = ContaCorrente.get(id)
-
-        if(!contaParaDeletar){render status: 404; return}
-
-        contaParaDeletar.delete(flush:true)
-        render status:204 // vázio
+        def relato = contaCorrenteService.apagarDados(id)
+        response.status = relato.statusHttp
+        render relato as JSON
     }
 }

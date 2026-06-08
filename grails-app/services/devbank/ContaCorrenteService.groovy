@@ -6,8 +6,6 @@ import grails.gorm.transactions.Transactional
 class ContaCorrenteService {
     def salvarDados(Map dadosDaContaCorrenteJSON){
         // Validação inicial dos dados
-        println "DADOS RECEBIDOS: ${dadosDaContaCorrenteJSON}"
-        println "TITULAR: ${dadosDaContaCorrenteJSON.titular}"
         if(!dadosDaContaCorrenteJSON.titular){
             return [sucesso: false, mensagem: "Insira o seu nome!", statusHttp: 400]
         }
@@ -49,4 +47,37 @@ class ContaCorrenteService {
             statusHttp: 201
         ]
     }
+    def atualizarDados(Long id, Map dadosJSON){
+        def contaExistente = ContaCorrente.get(id)
+
+        if(!contaExistente){
+            return [sucesso: false, mensagem: "Conta não encontrada", statusHttp: 404]
+        }
+
+        if(dadosJSON.titular) contaExistente.titular = dadosJSON.titular
+        if(dadosJSON.celular) contaExistente = dadosJSON.celular
+        if(dadosJSON.email)   contaExistente = dadosJSON.email
+        if(dadosJSON.chavePix) contaExistente = dadosJSON.chavePix
+
+
+    if(!contaExistente.save(flush:true)){
+        return[sucesso: false, mensagem: "Erro ao atualizar", erros: contaExistente.errors.allErrors, statusHttp: 422]
+    }
+''
+    return [sucesso: true, mensagem: "Conta atualizada", dados: contaExistente, statusHttp: 200]
+
+    }
+
+    def apagarDados(Long id){
+        def contaExistente = ContaCorrente.get(id)
+
+        if(!contaExistente){
+            return [sucesso: false, mensagem: "Conta não encontrada", statusHttp: 404]
+        }
+
+        contaExistente.delete(flush:true)
+
+        return[sucesso: true, mensagem: "Conta apagada", dados: contaExistente, statusHttp: 204]
+    }
+    
 }

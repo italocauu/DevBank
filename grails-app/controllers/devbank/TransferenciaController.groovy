@@ -68,3 +68,9 @@ class TransferenciaController {
         render formatarTransferencia(newTransferencia) as JSON
     }
 }
+
+/*    Tarefas a fazer:
+// Trazer o formatarTransferencia para um DTO da transferencia
+// Alterar o save e a lógica, tirar daqui para o service
+//  
+/* 
