@@ -101,7 +101,7 @@ dataSource:
 environments:
     development:
         dataSource:
-            dbCreate: update
+            dbCreate: create-drop
             url: jdbc:postgresql://localhost:5432/devbank?currentSchema=public
             driverClassName: org.postgresql.Driver
             dialect: org.hibernate.dialect.PostgreSQLDialect

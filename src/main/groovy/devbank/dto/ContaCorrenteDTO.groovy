@@ -2,6 +2,7 @@ package devbank.dto
 
 import devbank.ContaCorrente
 
+
 class ContaCorrenteDTO{
     Long id
     String titular

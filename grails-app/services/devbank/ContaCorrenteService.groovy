@@ -1,6 +1,9 @@
 package devbank
 
 import grails.gorm.transactions.Transactional
+import devbank.utils.CpfValidator 
+import devbank.utils.CelularValidator
+import devbank.utils.EmailValidator
 
 @Transactional
 class ContaCorrenteService {
@@ -22,7 +25,15 @@ class ContaCorrenteService {
             return [sucesso: false, messagem: "Insira um E-mail!", statusHttp: 400]
         }
 
-        // Regras de negócios
+    //Instanciando:
+        def novaConta = new ContaCorrente(
+            titular: dadosDaContaCorrenteJSON.titular,
+            cpf:     dadosDaContaCorrenteJSON.cpf,
+            celular: dadosDaContaCorrenteJSON.celular,
+            email:   dadosDaContaCorrenteJSON.email,
+        )
+
+    // Regras de negócios
 
         if(!CpfValidator.isValid(dadosDaContaCorrenteJSON.cpf)){
             return [sucesso: false, mensagem: "CPF Inválido", statusHttp: 400]
@@ -35,12 +46,6 @@ class ContaCorrenteService {
         }
 
         // Hora de salvar!
-        def novaConta = new ContaCorrente(
-            titular: dadosDaContaCorrenteJSON.titular,
-            cpf:     dadosDaContaCorrenteJSON.cpf,
-            celular: dadosDaContaCorrenteJSON.celular,
-            email:   dadosDaContaCorrenteJSON.email
-        )
 
         if(!novaConta.save(flush: true)){
             return[
@@ -48,15 +53,15 @@ class ContaCorrenteService {
                 mensagem: "Falha na formatação dos dados. Verifique os seus dados e tente novamente.",
                 erros: novaConta.errors.allErrors,
                 statusHttp: 422
-            ]
+            ]   
         }
         return[
             sucesso: true,
             mensagem: "Conta criada com sucesso",
             dados: novaConta,
             statusHttp: 201
-        ]
-    }
+    ]
+}
     def atualizarDados(Long id, Map dadosJSON){
         def contaExistente = ContaCorrente.get(id)
 
@@ -71,10 +76,9 @@ class ContaCorrenteService {
 
 
     if(!contaExistente.save(flush:true)){
-        return[sucesso: false, mensagem: "Erro ao atualizar", erros: contaExistente.errors.allErrors, statusHttp: 422]
-    }
+            return[sucesso: false, mensagem: "Erro ao atualizar", erros: contaExistente.errors.allErrors, statusHttp: 422]
+    }   
     return [sucesso: true, mensagem: "Conta atualizada", dados: contaExistente, statusHttp: 200]
-
     }
 
     def apagarDados(Long id){
@@ -88,5 +92,4 @@ class ContaCorrenteService {
 
         return[sucesso: true, mensagem: "Conta apagada", dados: contaExistente, statusHttp: 204]
     }
-    
 }
