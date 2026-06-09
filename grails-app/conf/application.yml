@@ -93,6 +93,8 @@ hibernate:
         queries: false
         use_second_level_cache: false
         use_query_cache: false
+    #hbm2ddl:
+    #   auto: update
 dataSource:
     pooled: true
     jmxExport: true
