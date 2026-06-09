@@ -48,10 +48,18 @@ class ContaCorrenteService {
         // Hora de salvar!
 
         if(!novaConta.save(flush: true)){
-            return[
+            // Entender melhor a funcionalidade do collect e as principais diferenças entre
+            // O fieldErrors e o allErrors
+            def errosFormatados = novaConta.errors.fieldErrors.collect{ erro ->
+            [
+                campo: erro.field,
+                mensagem: "O ${erro.field} informado já está cadastrado em outra conta."
+            ]
+        }
+            return[ 
                 sucesso: false,
                 mensagem: "Falha na formatação dos dados. Verifique os seus dados e tente novamente.",
-                erros: novaConta.errors.allErrors,
+                erros:  errosFormatados, //novaConta.errors.allErrors,
                 statusHttp: 422
             ]   
         }
@@ -91,5 +99,9 @@ class ContaCorrenteService {
         contaExistente.delete(flush:true)
 
         return[sucesso: true, mensagem: "Conta apagada", dados: contaExistente, statusHttp: 204]
+    }
+
+    def escolherChavePix(){
+        
     }
 }

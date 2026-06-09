@@ -5,32 +5,31 @@ import devbank.dto.TransferenciaDTO
 
 class TransferenciaController {
 
-static responseFormats = ['json']
+    static responseFormats = ['json']
 
-TransferenciaService transferenciaService
+    TransferenciaService transferenciaService
 
-def index() {
-    try{
-        def listarTransferencias = Transferencia.list().collect{conta ->
-        TransferenciaDTO.formatarTransferencia(conta)
+    def index() {
+        try{
+            def listarTransferencias = Transferencia.list().collect{conta ->
+            TransferenciaDTO.formatarTransferencia(conta)
         }
-
         render listarTransferencias as JSON
     } catch (Exception e){
         render status: 422
-    }
+        }
     }
 
 
-def show (Long id){
-    def comprovante = Transferencia.get(id)
-    if(!comprovante){
-        render status: 404, text:"Transferencia não localizada"
-        return
+    def show (Long id){
+        def comprovante = Transferencia.get(id)
+        if(!comprovante){
+            render status: 404, text:"Transferencia não localizada"
+            return
+        }
+        def dto = TransferenciaDTO.formatarTransferencia(comprovante) as JSON
+        render dto.properties as JSON
     }
-    def dto = TransferenciaDTO.formatarTransferencia(comprovante) as JSON
-    render dto.properties as JSON
-}
 
 /* 
 def save(){
@@ -43,16 +42,16 @@ def save(){
     render newTransferencia, status: 201
     */
 
-def save(){
-    try{
-        def novaTransferencia = transferenciaService.realizarTransferencia(request.JSON)
-        def dto = TransferenciaDTO.formatarTransferencia(novaTransferencia)
-        render dto as JSON
-    } catch (Exception e){
-        render status: 422, text: e.getMessage()
-    }
+    def save(){
+        try{
+            def novaTransferencia = transferenciaService.realizarTransferencia(request.JSON)
+            def dto = TransferenciaDTO.formatarTransferencia(novaTransferencia)
+            render dto as JSON
+        } catch (Exception e){
+            render status: 422, text: e.getMessage()
+        }
 
-}
+    }
 }
 
 //
