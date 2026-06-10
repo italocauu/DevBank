@@ -8,6 +8,7 @@ class TransferenciaService {
     @Transactional
     Transferencia realizarTransferencia(def dados){
         
+
         String origem = dados.chavePixOrigem
         String destino = dados.chavePixDestino
 
@@ -50,14 +51,15 @@ class TransferenciaService {
 
     }
 
-    // Checagem pelo slq
+    // Checagem pelo sql
 
     def isChavePixExiste(String chavePixBuscada){
-        def query{"""
+        def query = """
             SELECT 1
             FROM ContaCorrente
             WHERE chavePixBuscada = :pixBuscado;
         """
+
         def resultado = session.Factory.currentSession
             .createSQLQuery(query)
             .setParameter("pixBuscado", chavePixBuscada)
@@ -71,4 +73,3 @@ class TransferenciaService {
     //      Tarefas
     // Levar a lógica de salvamento e manipulação para aqui
     // 
-}
