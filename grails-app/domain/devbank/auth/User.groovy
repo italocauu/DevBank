@@ -1,11 +1,14 @@
-package devbank
+package devbank.auth
+
+import devbank.auth.Permission
+import devbank.auth.UserPermission
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
-import grails.compiler.GrailsCompileStatic
+// import grails.compiler.GrailsCompileStatic
 
 // Parte relacionada a autenticação
-@GrailsCompileStatic
+// @GrailsCompileStatic
 @EqualsAndHashCode(includes='username')
 @ToString(includes='username', includeNames=true, includePackage=false)
 class User implements Serializable {

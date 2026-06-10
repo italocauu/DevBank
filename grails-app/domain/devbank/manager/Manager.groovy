@@ -7,7 +7,7 @@ class Manager extends User{
     String agencia
     BigDecimal limiteAprovado
 
-    static contraints = {
+    static constraints = {
         registro nullable: false, blank: false, unique: true
         agencia nullable: false, blank: false
         limiteAprovado nullable: false, min: 0.0

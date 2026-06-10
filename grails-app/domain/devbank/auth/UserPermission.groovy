@@ -1,13 +1,15 @@
-package devbank
+package devbank.auth
+
+import devbank.auth.User
+import devbank.auth.Permission
 
 import grails.gorm.DetachedCriteria
 import groovy.transform.ToString
-
 import org.codehaus.groovy.util.HashCodeHelper
-import grails.compiler.GrailsCompileStatic
+// import grails.compiler.GrailsCompileStatic
 
 // Parte relacionada a ligação entre eles
-@GrailsCompileStatic
+// @GrailsCompileStatic
 @ToString(cache=true, includeNames=true, includePackage=false)
 class UserPermission implements Serializable {
 

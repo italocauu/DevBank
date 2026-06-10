@@ -1,11 +1,11 @@
-package devbank
+package devbank.auth
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
-import grails.compiler.GrailsCompileStatic
+// import grails.compiler.GrailsCompileStatic
 
 // Parte relacionada a permissões
-@GrailsCompileStatic
+// @GrailsCompileStatic
 @EqualsAndHashCode(includes='authority')
 @ToString(includes='authority', includeNames=true, includePackage=false)
 class Permission implements Serializable {
