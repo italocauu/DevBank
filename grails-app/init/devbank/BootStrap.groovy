@@ -11,10 +11,7 @@ class BootStrap {
         // Criando as permissões no banco
         def permClient = Permission.findOrSaveWhere(authority: 'ROLE_CLIENT')
         def permTeller = Permission.findOrSaveWhere(authority: 'ROLE_TELLER')
-        def permManager = Permission.findOrSaveWhere(authority: 'ROLE_MANAGER'
-
-
-        )
+        def permManager = Permission.findOrSaveWhere(authority: 'ROLE_MANAGER')
     }
 
     def destroy = {}
