@@ -23,6 +23,18 @@ class ContaCorrenteDTO{
             email: conta.email,
         )
     }
+
+    Map toMap() {
+        return [
+            id:       this.id,
+            titular:  this.titular,
+            cpf:      this.cpf,
+            chavePix: this.chavePix,
+            saldo:    this.saldo,
+            celular:  this.celular,
+            email:    this.email
+        ]
+    }
     
     private static String formatarCpf(String cpf){
         if(!cpf) return null

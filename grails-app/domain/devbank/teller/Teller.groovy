@@ -8,8 +8,8 @@ class Teller extends User{
     String registro
     String agencia
 
-    static contraints = {
+    static constraints = {
         registro nullable: false, blank: false, unique: true
-        agencia nullable: false, blank false
+        agencia nullable: false, blank: false
     }
 }

@@ -137,3 +137,26 @@ environments:
                 testOnReturn: false
                 jdbcInterceptors: ConnectionState
                 defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
+---
+grails:
+    plugin:
+        springsecurity:
+            userLookup:
+                userDomainClassName: devbank.auth.User
+                authorityJoinClassName: devbank.auth.UserPermission
+            authority:
+                className: devbank.auth.Permission
+            password:
+                algorithm: bcrypt
+            successHandler:
+                alwaysUseDefault: false
+            roleAfterLoginUrl:
+                ROLE_CLIENT: /api/client
+                ROLE_TELLER: /api/teller
+                ROLE_MANAGER: /api/manager
+                ROLE_DEV: /api/dev
+---
+logging:
+    level:
+        grails.plugin.springsecurity: DEBUG
+        org.springframework.springsecurity: DEBUG

@@ -2,7 +2,9 @@ package devbank
 
 import grails.converters.JSON
 import devbank.dto.ContaCorrenteDTO
+import grails.plugin.springsecurity.annotation.Secured
 
+@Secured(['ROLE_DEV'])
 class ContaCorrenteController {
 
     static responseFormats = ['json']
@@ -60,7 +62,7 @@ class ContaCorrenteController {
         try{
             def contaEncontrar = ContaCorrente.get(id)
     
-            if(!ContaCorrente.get(id)){
+            if(!contaEncontrar){
                 render status: 404, text: "Conta não encontrada"
                 return
             }

@@ -5,17 +5,16 @@ import devbank.auth.Permission
 import devbank.auth.UserPermission
 import devbank.client.Client
 import devbank.manager.Manager
-import devbank.manager.Teller
+import devbank.teller.Teller
 import grails.gorm.transactions.Transactional
 import org.hibernate.SessionFactory
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
-SessionFactory SessionFactory
 
 @Transactional
 class MasterService {
 
-
+    SessionFactory SessionFactory
     // Verifica username
     boolean usernameIsExist(String username){
         def session = sessionFactory.currentSession

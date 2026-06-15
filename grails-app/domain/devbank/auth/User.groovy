@@ -31,11 +31,12 @@ class User implements Serializable {
     }
 
     static constraints = {
-        password nullable: false, blank: false, password: true
+        password nullable: false, blank: false
         username nullable: false, blank: false, unique: true
     }
 
     static mapping = {
+        table 'devbank_user'
 	    password column: '`password`'
     }
 }
