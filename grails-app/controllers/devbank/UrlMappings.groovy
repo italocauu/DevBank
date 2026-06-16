@@ -22,5 +22,6 @@ class UrlMappings {
 
 
 
+        "/api/teller/depositar"(controller: "teller", action: "depositar", method: "POST")
     }
 }

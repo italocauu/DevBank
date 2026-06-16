@@ -1,22 +1,23 @@
 package devbank
 
 import grails.gorm.transactions.Transactional
+import org.hibernate.SessionFactory
 
-
+@Transactional
 class TransferenciaService {
+    SessionFactory sessionFactory
 
-    @Transactional
     Transferencia realizarTransferencia(def dados){
         
 
-        String origem = dados.chavePixOrigem
-        String destino = dados.chavePixDestino
+        ContaCorrente origem = buscarContaPorChavePix(dados.chavePixOrigem)
+        ContaCorrente destino = buscarContaPorChavePix(dados.chavePixDestino)   
 
-        if(!isChavePixExiste(origem)){
+        if(!origem){
             return [sucesso: false, mensagem: "Conta pix de origem não existe."]
         }
 
-        if(!isChavePixExiste(destino)){
+        if(!destino){
             return [sucesso: false, mensagem: "Chave pix de destino não existe."]
         }
 
@@ -53,21 +54,17 @@ class TransferenciaService {
 
     // Checagem pelo sql
 
-    def isChavePixExiste(String chavePixBuscada){
-        def query = """
-            SELECT 1
-            FROM ContaCorrente
-            WHERE chavePixBuscada = :pixBuscado;
-        """
+        ContaCorrente buscarContaPorChavePix(String chavePix) {
+        def resultado = sessionFactory.currentSession.createSQLQuery("""
+            SELECT id FROM conta_corrente
+            WHERE chave_pix = :chavePix
+        """)
+        .setParameter("chavePix", chavePix)
+        .uniqueResult()
 
-        def resultado = session.Factory.currentSession
-            .createSQLQuery(query)
-            .setParameter("pixBuscado", chavePixBuscada)
-            .list()
-
-        return resultado ? true: false
-        }
+        return resultado ? ContaCorrente.get(resultado as Long) : null
     }
+}
 
 
     //      Tarefas

@@ -2,7 +2,9 @@ package devbank
 
 import grails.converters.JSON
 import devbank.dto.TransferenciaDTO
+import grails.plugin.springsecurity.annotation.Secured
 
+@Secured(['ROLE_DEV'])
 class TransferenciaController {
 
     static responseFormats = ['json']

@@ -1,9 +1,9 @@
 
 
 // Added by the Spring Security Core plugin:
-grails.plugin.springsecurity.userLookup.userDomainClassName = 'devbank.User'
-grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'devbank.UserPermission'
-grails.plugin.springsecurity.authority.className = 'devbank.Permission'
+//grails.plugin.springsecurity.userLookup.userDomainClassName = 'devbank.User'
+//grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'devbank.UserPermission'
+//grails.plugin.springsecurity.authority.className = 'devbank.Permission'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	[pattern: '/',               access: ['permitAll']],
 	[pattern: '/error',          access: ['permitAll']],
@@ -25,4 +25,7 @@ grails.plugin.springsecurity.filterChain.chainMap = [
 	[pattern: '/**/favicon.ico', filters: 'none'],
 	[pattern: '/**',             filters: 'JOINED_FILTERS']
 ]
+
+grails.plugin.springsecurity.useBasicAuth = true
+grails.plugin.springsecurity.basic.realmName = "DevBank API"
 

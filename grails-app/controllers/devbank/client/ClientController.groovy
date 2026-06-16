@@ -3,7 +3,8 @@ package devbank
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 
-@Secured('permitAll')
+
+@Secured(['ROLE_DEV', 'ROLE_CLIENT'])
 class ClientController {
 
     static responseFormats = ['json']
