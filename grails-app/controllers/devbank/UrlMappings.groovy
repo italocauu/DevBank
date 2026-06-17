@@ -23,5 +23,7 @@ class UrlMappings {
 
 
         "/api/teller/depositar"(controller: "teller", action: "depositar", method: "POST")
+        "/api/manager/caixas"(controller: "manager", action: "listarCaixas", method: "GET")
+        "/api/manager/caixas"(controller: "manager", action: "criarCaixa", method: "POST")
     }
 }

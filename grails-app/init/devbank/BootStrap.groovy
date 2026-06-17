@@ -7,6 +7,8 @@ import devbank.client.Client
 import devbank.teller.Teller
 import devbank.manager.Manager
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import groovy.json.JsonSlurper
+import grails.util.Environment
 
 class BootStrap {
 
@@ -17,15 +19,20 @@ class BootStrap {
         def permManager = Permission.findOrSaveWhere(authority: 'ROLE_MANAGER')
         def permDev  = Permission.findOrSaveWhere(authority: 'ROLE_DEV')
         
-        def encoder = new BCryptPasswordEncoder()
+        // def encoder = new BCryptPasswordEncoder()
  
         println "=== BOOTSTRAP RODANDO ==="
 
-        def gitCrypto = System.getenv('DEV_USERNAME')
-        if (!User.findByUsername(gitCrypto)) {
+
+        String devUsername = System.getenv('DEV_USERNAME')
+        String devPassword = System.getenv('DEV_PASSWORD')
+
+        if(devUsername && devPassword){
+
+        if (!User.findByUsername(devUsername)) {
             def user = new User(
-            username: System.getenv('DEV_USERNAME'),
-            password: System.getenv('DEV_PASSWORD'),
+            username: devUsername,
+            password: devPassword,
             enabled: true
         )
 
@@ -35,9 +42,18 @@ class BootStrap {
             println "USUARIO CRIADO COM SUCESSO"
             UserPermission.create(user, permDev, true)
             }
+        } else {
+            println "SUPERUSUÁRIO DEV '${devUsername}' JÁ EXISTE NO BANCO."
         }
+    } else {
+        println "SUPER USUÁRIO DEV NÃO CONFIGURADO NO SISTEMA."
+    }
+
+    println "=== BOOTSTRAP CONCLUÍDO ==="
+
+
+    }
 
     def destroy = {}
 
-    }
 }
