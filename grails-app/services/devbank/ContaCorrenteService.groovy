@@ -101,7 +101,14 @@ class ContaCorrenteService {
         return[sucesso: true, mensagem: "Conta apagada", dados: contaExistente, statusHttp: 204]
     }
 
-    def escolherChavePix(){
-        
+    def escolherChavePix(){ 
+        // Receber o ID e a escolha de qual informação vai ser a chavePix do usuário
+        // Comparar e saber se tem algo já salvo na chavePix referente ao ID no banco de dados
+        // Comparar a chavePix escolhida com a do banco de dados se tiver algo salvo lá
+        // Salvar na tabela
+    }
+
+    def queryCliente(){
+        SELECT 
     }
 }

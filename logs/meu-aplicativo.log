@@ -1,0 +1,4 @@
+2026-07-01 16:05:26 INFO  devbank.Application - Starting Application on fedora with PID 51239 (/home/italocauu/DevWeb/eclipse/projetos/DevBank/build/classes/main started by italocauu in /home/italocauu/DevWeb/eclipse/projetos/DevBank)
+2026-07-01 16:05:26 DEBUG devbank.Application - Running with Spring Boot v1.5.8.RELEASE, Spring v4.3.12.RELEASE
+2026-07-01 16:05:26 INFO  devbank.Application - The following profiles are active: development
+2026-07-01 16:05:36 INFO  devbank.Application - Started Application in 10.12 seconds (JVM running for 11.442)
