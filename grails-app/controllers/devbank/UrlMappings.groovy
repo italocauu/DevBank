@@ -22,6 +22,10 @@ class UrlMappings {
 
 
 
+        "/api/auth/login"(controller: "auth", action: "login", method: "POST")
+        "/api/auth/publicKey"(controller: "auth", action: "publicKey", method: "GET")
+        "/api/auth/whoAmI"(controller: "auth", action: "whoAmI", method: "GET")
+
         "/api/teller/depositar"(controller: "teller", action: "depositar", method: "POST")
         "/api/manager/caixas"(controller: "manager", action: "listarCaixas", method: "GET")
         "/api/manager/caixas"(controller: "manager", action: "criarCaixa", method: "POST")

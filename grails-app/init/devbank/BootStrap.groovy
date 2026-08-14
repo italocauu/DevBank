@@ -9,10 +9,21 @@ import devbank.manager.Manager
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import groovy.json.JsonSlurper
 import grails.util.Environment
+import grails.plugin.springsecurity.SecurityFilterPosition
+import grails.plugin.springsecurity.SpringSecurityUtils
 
 class BootStrap {
 
     def init = { servletContext ->
+        // Encaixa o jwtAuthenticationFilter na cadeia do Spring Security. Só funciona
+        // aqui (runtime, depois que a cadeia já foi montada) — é a forma documentada
+        // pelo próprio plugin: SpringSecurityUtils.clientRegisterFilter muta em memória
+        // a lista de filtros já construída, então precisa do contexto totalmente de pé.
+        SpringSecurityUtils.clientRegisterFilter(
+                'jwtAuthenticationFilter',
+                SecurityFilterPosition.PRE_AUTH_FILTER.order
+        )
+
         // Criando as permissões no banco
         def permClient = Permission.findOrSaveWhere(authority: 'ROLE_CLIENT')
         def permTeller = Permission.findOrSaveWhere(authority: 'ROLE_TELLER')

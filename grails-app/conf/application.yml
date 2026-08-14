@@ -138,6 +138,16 @@ environments:
                 jdbcInterceptors: ConnectionState
                 defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
 ---
+devbank:
+    jwt:
+        # Caminhos default (dev): se os arquivos não existirem, a RsaKeyService gera
+        # um par novo de 2048 bits automaticamente na primeira subida.
+        # Em produção, gere as chaves com openssl e aponte pra elas via env var —
+        # DEVBANK_JWT_PRIVATEKEYPATH / DEVBANK_JWT_PUBLICKEYPATH (Spring Boot faz o
+        # bind automático) — nunca deixe a privada nascer sozinha num restart de prod.
+        privateKeyPath: keys/jwt_private_key.pem
+        publicKeyPath: keys/jwt_public_key.pem
+---
 grails:
     plugin:
         springsecurity:
